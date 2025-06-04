@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
-                        .defaultSuccessUrl("/home")
+                        .defaultSuccessUrl("/products")
                         .failureUrl("/login?error")
                         .permitAll()
                 )

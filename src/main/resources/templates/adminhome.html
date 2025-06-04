@@ -1,17 +1,37 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <title>SpringBoot Security</title>
+<head th:insert="~{common :: commonHead}">
+    <title>사용자 목록</title>
 </head>
+
 <body>
-<p>Welcome Administrator(<span sec:authentication="principal.username">User</span>)</p>
+<div class="container">
+    <h1 class="mt-5">전체 사용자 목록</h1>
 
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="LogOut"/>
-</form>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>이메일</th>
+            <th>역할(Role)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">ID</td>
+            <td th:text="${user.email}">Email</td>
+            <td>
+                <span th:each="role : ${user.roles}" th:text="${role.rolename} + ' '" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a class="btn btn-primary" th:href="@{/products}">뒤로가기</a>
+</div>
+
+<div th:insert="~{common :: commonScript}"></div>
 </body>
-
 </html>

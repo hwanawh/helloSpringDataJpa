@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <!-- 이 줄 추가 -->
 
 <head th:insert="~{common :: commonHead}">
     <title>Product Manager</title>
@@ -8,8 +9,16 @@
 
 <body>
 <div class="container">
-    <h1 class="mt-5">Product List</h1>
-    <a class="btn btn-primary mb-3" th:href="@{/products/new}">Create New Product</a>
+    <h1 class="mt-5">상품 목록</h1>
+
+    <!-- 관리자만 새 상품 생성 버튼 보이게 -->
+    <div sec:authorize="hasRole('ADMIN')">
+        <a class="btn btn-primary mb-3" th:href="@{/products/new}">새 상품 추가</a>
+    </div>
+
+    <div sec:authorize="hasRole('ADMIN')" class="mb-3">
+        <a class="btn btn-secondary" th:href="@{/admin/users}">전체 사용자 목록 보기</a>
+    </div>
 
     <table class="table table-bordered">
         <thead>
@@ -30,8 +39,11 @@
             <td th:text="${product.madeIn}">Made in</td>
             <td th:text="${product.price}">Price</td>
             <td>
-                <a class="btn btn-primary btn-sm" th:href="@{'/products/edit/' + ${product.id}}">Edit</a>
-                <a class="btn btn-danger btn-sm" th:href="@{'/products/delete/' + ${product.id}}">Delete</a>
+                <!-- 관리자만 Edit/Delete 버튼 보이게 -->
+                <div sec:authorize="hasRole('ADMIN')">
+                    <a class="btn btn-primary btn-sm" th:href="@{'/products/edit/' + ${product.id}}">편집</a>
+                    <a class="btn btn-danger btn-sm" th:href="@{'/products/delete/' + ${product.id}}">삭제</a>
+                </div>
             </td>
         </tr>
         </tbody>
